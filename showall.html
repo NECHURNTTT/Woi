@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAWAIIYUMEE - SHOW ALL</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="binary-bg" id="binaryBg"></div>
+
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="KAWAIIYUMEE LOGO" class="logo-img large-banner" onerror="this.src='https://via.placeholder.com/150x150/000000/ffffff?text=KY'">
+        </div>
+
+        <div class="header">
+            <div class="online-badge">
+                <span class="online-dot"></span>
+                <span class="online-text">ONLINE</span>
+            </div>
+            <div class="version">v9.0</div>
+        </div>
+
+        <div class="title">
+            <h1>SHOW ALL UPLOAD</h1>
+        </div>
+
+        <div class="sub-menu-container">
+            <a href="index.html" class="sub-menu-item">🏠 HOME</a>
+            <a href="binary.html" class="sub-menu-item">🔢 BINARY</a>
+            <a href="ascii.html" class="sub-menu-item">💻 ASCII</a>
+            <a href="morse.html" class="sub-menu-item">⚡ MORSE</a>
+            <a href="upload.html" class="sub-menu-item">📸 UPLOAD</a>
+            <a href="base64.html" class="sub-menu-item">🔐 BASE64</a>
+            <a href="cipher.html" class="sub-menu-item">🔑 CIPHER</a>
+            <a href="textreverse.html" class="sub-menu-item">🔄 REVERSE</a>
+            <a href="asciiart.html" class="sub-menu-item">🎨 ASCII ART</a>
+            <a href="stegano.html" class="sub-menu-item">🕵️ STEGANO</a>
+            <a href="exif.html" class="sub-menu-item">📷 EXIF</a>
+            <a href="profile.html" class="sub-menu-item">👤 PROFIL</a>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="filterGallery('all')">ALL</button>
+            <button class="filter-btn" onclick="filterGallery('image')">📷 FOTO</button>
+            <button class="filter-btn" onclick="filterGallery('video')">🎥 VIDEO</button>
+            <button class="filter-btn" onclick="filterGallery('file')">📁 FILE</button>
+        </div>
+
+        <div class="gallery-container">
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+
+        <div id="commentModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3 id="modalTitle">KOMENTAR</h3>
+                <div id="commentsList" class="comments-list"></div>
+                <textarea id="newComment" class="comment-input" placeholder="TULIS KOMENTAR..."></textarea>
+                <button class="comment-btn" onclick="addComment()">KIRIM</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                POWERED BY <span>SAURUS</span> • 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        let currentItemId = null;
+
+        function loadGallery() {
+            const gallery = JSON.parse(localStorage.getItem('gallery')) || [];
+            displayGallery(gallery);
+        }
+
+        function displayGallery(items) {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+
+            const filtered = currentFilter === 'all' ? items : items.filter(item => item.type === currentFilter);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:50px; border:2px solid white; font-size:18px;">📭 BELUM ADA UPLOAD</div>';
+                return;
+            }
+
+            filtered.slice().reverse().forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'gallery-card';
+                card.setAttribute('data-id', index);
+
+                let content = '';
+                if (item.type === 'image') {
+                    content = `<img src="${item.src}" style="width:100%; height:150px; object-fit:cover;">`;
+                } else if (item.type === 'video') {
+                    content = `<video src="${item.src}" style="width:100%; height:150px; object-fit:cover;"></video>`;
+                } else {
+                    content = `<div style="height:150px; display:flex; align-items:center; justify-content:center; background:#111; border-bottom:2px solid white; font-size:16px;">📁 ${item.name || 'FILE'}</div>`;
+                }
+
+                const commentCount = item.comments ? item.comments.length : 0;
+
+                card.innerHTML = `
+                    ${content}
+                    <div style="padding:10px;">
+                        <p style="color:white; font-size:14px; margin-bottom:5px;">${item.caption}</p>
+                        <p style="color:#888; font-size:12px;">👤 ${item.user || 'ANON'}</p>
+                        <p style="color:#666; font-size:11px;">${item.timestamp || ''}</p>
+                        <button class="comment-view-btn" onclick="openCommentModal(${index})">💬 KOMENTAR (${commentCount})</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterGallery(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadGallery();
+        }
+
+        function openCommentModal(itemId) {
+            const gallery = JSON.parse(localStorage.getItem('gallery')) || [];
+            currentItemId = itemId;
+            
+            const item = gallery[itemId];
+            document.getElementById('modalTitle').innerText = `KOMENTAR - ${item.caption.substring(0,30)}...`;
+            
+            const commentsList = document.getElementById('commentsList');
+            commentsList.innerHTML = '';
+            
+            if (item.comments && item.comments.length > 0) {
+                item.comments.forEach(comment => {
+                    const commentDiv = document.createElement('div');
+                    commentDiv.className = 'comment-item';
+                    commentDiv.innerHTML = `
+                        <strong>${comment.user}:</strong> ${comment.text}
+                        <small style="color:#666; display:block;">${comment.time}</small>
+                    `;
+                    commentsList.appendChild(commentDiv);
+                });
+            } else {
+                commentsList.innerHTML = '<p style="color:#888;">BELUM ADA KOMENTAR</p>';
+            }
+            
+            document.getElementById('commentModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('commentModal').style.display = 'none';
+        }
+
+        function addComment() {
+            const commentText = document.getElementById('newComment').value.trim();
+            if (!commentText) { alert('TULIS KOMENTAR DULU!'); return; }
+            
+            const gallery = JSON.parse(localStorage.getItem('gallery')) || [];
+            
+            if (!gallery[currentItemId].comments) {
+                gallery[currentItemId].comments = [];
+            }
+            
+            gallery[currentItemId].comments.push({
+                user: 'ANON',
+                text: commentText,
+                time: new Date().toLocaleString()
+            });
+            
+            localStorage.setItem('gallery', JSON.stringify(gallery));
+            
+            document.getElementById('newComment').value = '';
+            openCommentModal(currentItemId);
+            loadGallery();
+        }
+
+        window.onload = loadGallery;
+    </script>
+</body>
+</html>

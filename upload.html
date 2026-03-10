@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAWAIIYUMEE - UPLOAD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="binary-bg" id="binaryBg"></div>
+
+    <!-- LOGIN OVERLAY -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
+            <h2>🔒 LOGIN UPLOAD</h2>
+            <input type="text" id="loginUser" class="login-input" placeholder="USERNAME">
+            <input type="password" id="loginPass" class="login-input" placeholder="PASSWORD">
+            <button class="login-btn" onclick="validateLogin()">MASUK</button>
+            <div id="loginError" class="login-error"></div>
+        </div>
+    </div>
+
+    <div class="container" id="mainContent" style="display: none;">
+        <div class="logo-section">
+            <img src="logo.png" alt="KAWAIIYUMEE LOGO" class="logo-img large-banner" onerror="this.src='https://via.placeholder.com/150x150/000000/ffffff?text=KY'">
+        </div>
+
+        <div class="header">
+            <div class="online-badge">
+                <span class="online-dot"></span>
+                <span class="online-text">ONLINE</span>
+            </div>
+            <div class="version">v9.0</div>
+        </div>
+
+        <div class="title">
+            <h1>UPLOAD MEDIA</h1>
+        </div>
+
+        <div class="sub-menu-container">
+            <a href="index.html" class="sub-menu-item">🏠 HOME</a>
+            <a href="binary.html" class="sub-menu-item">🔢 BINARY</a>
+            <a href="ascii.html" class="sub-menu-item">💻 ASCII</a>
+            <a href="morse.html" class="sub-menu-item">⚡ MORSE</a>
+            <a href="upload.html" class="sub-menu-item active">📸 UPLOAD</a>
+            <a href="base64.html" class="sub-menu-item">🔐 BASE64</a>
+            <a href="cipher.html" class="sub-menu-item">🔑 CIPHER</a>
+            <a href="textreverse.html" class="sub-menu-item">🔄 REVERSE</a>
+            <a href="asciiart.html" class="sub-menu-item">🎨 ASCII ART</a>
+            <a href="stegano.html" class="sub-menu-item">🕵️ STEGANO</a>
+            <a href="exif.html" class="sub-menu-item">📷 EXIF</a>
+            <a href="profile.html" class="sub-menu-item">👤 PROFIL</a>
+        </div>
+
+        <div class="user-info" id="userInfo"></div>
+
+        <div class="tool-section">
+            <div class="tool-box">
+                <h2>📁 UPLOAD FILE</h2>
+                <input type="file" id="fileUpload" class="file-input" multiple>
+                <label for="fileUpload" class="custom-file-label">📁 PILIH FILE</label>
+                <div class="file-name" id="fileNames"></div>
+                <textarea id="fileCaption" class="tool-input" placeholder="CAPTION FILE..."></textarea>
+                <button class="tool-btn" onclick="uploadFile()">UPLOAD FILE</button>
+            </div>
+
+            <div class="tool-box">
+                <h2>📷 UPLOAD FOTO</h2>
+                <input type="file" id="imageUpload" accept="image/*" class="file-input">
+                <label for="imageUpload" class="custom-file-label">📷 PILIH FOTO</label>
+                <div class="file-name" id="imageFileNames"></div>
+                <textarea id="imageCaption" class="tool-input" placeholder="CAPTION FOTO..."></textarea>
+                <button class="tool-btn" onclick="uploadImage()">UPLOAD FOTO</button>
+                <div class="preview-box" id="imagePreview"></div>
+            </div>
+
+            <div class="tool-box">
+                <h2>🎥 UPLOAD VIDEO</h2>
+                <input type="file" id="videoUpload" accept="video/*" class="file-input">
+                <label for="videoUpload" class="custom-file-label">🎥 PILIH VIDEO</label>
+                <div class="file-name" id="videoFileNames"></div>
+                <textarea id="videoCaption" class="tool-input" placeholder="CAPTION VIDEO..."></textarea>
+                <button class="tool-btn" onclick="uploadVideo()">UPLOAD VIDEO</button>
+                <div class="preview-box" id="videoPreview"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                POWERED BY <span>SAURUS</span> • 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        const galleryItems = JSON.parse(localStorage.getItem('gallery')) || [];
+
+        document.getElementById('fileUpload').addEventListener('change', function(e) {
+            const files = e.target.files;
+            let names = '';
+            for (let i = 0; i < files.length; i++) {
+                names += (i+1) + '. ' + files[i].name + ' ';
+            }
+            document.getElementById('fileNames').textContent = names || 'TIDAK ADA FILE DIPILIH';
+        });
+
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            document.getElementById('imageFileNames').textContent = file ? file.name : 'TIDAK ADA FILE DIPILIH';
+        });
+
+        document.getElementById('videoUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            document.getElementById('videoFileNames').textContent = file ? file.name : 'TIDAK ADA FILE DIPILIH';
+        });
+
+        function validateLogin() {
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+            
+            if (user && pass) {
+                currentUser = user;
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('userInfo').innerHTML = `👤 LOGIN SEBAGAI: <strong>${user.toUpperCase()}</strong>`;
+            } else {
+                document.getElementById('loginError').innerText = 'ISI USERNAME & PASSWORD!';
+            }
+        }
+
+        function uploadFile() {
+            const files = document.getElementById('fileUpload').files;
+            const caption = document.getElementById('fileCaption').value;
+            
+            if (!files.length) { alert('PILIH FILE DULU!'); return; }
+            if (!currentUser) { alert('LOGIN DULU!'); window.location.reload(); return; }
+
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const item = {
+                        type: 'file',
+                        name: file.name,
+                        size: file.size,
+                        data: e.target.result,
+                        caption: caption || 'TANPA CAPTION',
+                        user: currentUser,
+                        timestamp: new Date().toLocaleString(),
+                        comments: []
+                    };
+                    galleryItems.push(item);
+                    localStorage.setItem('gallery', JSON.stringify(galleryItems));
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            alert(`${files.length} FILE DIUPLOAD!`);
+            document.getElementById('fileUpload').value = '';
+            document.getElementById('fileCaption').value = '';
+            document.getElementById('fileNames').textContent = '';
+        }
+
+        function uploadImage() {
+            const file = document.getElementById('imageUpload').files[0];
+            const caption = document.getElementById('imageCaption').value;
+
+            if (!file) { alert('PILIH FOTO DULU!'); return; }
+            if (!currentUser) { alert('LOGIN DULU!'); window.location.reload(); return; }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const item = {
+                    type: 'image',
+                    src: e.target.result,
+                    caption: caption || 'TANPA CAPTION',
+                    user: currentUser,
+                    timestamp: new Date().toLocaleString(),
+                    comments: []
+                };
+                galleryItems.push(item);
+                localStorage.setItem('gallery', JSON.stringify(galleryItems));
+                
+                document.getElementById('imagePreview').innerHTML = `
+                    <img src="${e.target.result}" style="max-width:100%; border:2px solid white;">
+                    <p style="color:white; font-size:14px;">CAPTION: ${caption || 'TANPA CAPTION'}<br>USER: ${currentUser}</p>
+                `;
+            };
+            reader.readAsDataURL(file);
+            
+            document.getElementById('imageUpload').value = '';
+            document.getElementById('imageCaption').value = '';
+            document.getElementById('imageFileNames').textContent = '';
+        }
+
+        function uploadVideo() {
+            const file = document.getElementById('videoUpload').files[0];
+            const caption = document.getElementById('videoCaption').value;
+
+            if (!file) { alert('PILIH VIDEO DULU!'); return; }
+            if (!currentUser) { alert('LOGIN DULU!'); window.location.reload(); return; }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const item = {
+                    type: 'video',
+                    src: e.target.result,
+                    caption: caption || 'TANPA CAPTION',
+                    user: currentUser,
+                    timestamp: new Date().toLocaleString(),
+                    comments: []
+                };
+                galleryItems.push(item);
+                localStorage.setItem('gallery', JSON.stringify(galleryItems));
+                
+                document.getElementById('videoPreview').innerHTML = `
+                    <video src="${e.target.result}" controls style="max-width:100%; border:2px solid white;"></video>
+                    <p style="color:white; font-size:14px;">CAPTION: ${caption || 'TANPA CAPTION'}<br>USER: ${currentUser}</p>
+                `;
+            };
+            reader.readAsDataURL(file);
+            
+            document.getElementById('videoUpload').value = '';
+            document.getElementById('videoCaption').value = '';
+            document.getElementById('videoFileNames').textContent = '';
+        }
+    </script>
+</body>
+</html>

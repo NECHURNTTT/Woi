@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAWAIIYUMEE - TEXT REVERSE</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tool-container { padding: 25px; border-bottom: 3px solid #ffffff; }
+        .tool-box { border: 3px solid #ffffff; padding: 25px; background: #0a0a0a; margin-bottom: 25px; }
+        .tool-box h2 { color: #ffffff; font-size: 32px; margin-bottom: 20px; text-align: center; }
+        .btn-group { display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .action-btn { background: #ffffff; color: #000000; border: 3px solid #ffffff; font-size: 18px; font-weight: 900; padding: 10px 25px; cursor: pointer; }
+        .action-btn:hover { background: #000000; color: #ffffff; }
+        .tool-output { background: #000000; border: 3px solid #ffffff; padding: 15px; color: #00ff00; font-size: 18px; font-weight: 700; font-family: 'Courier New', monospace; word-break: break-all; min-height: 100px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="binary-bg" id="binaryBg"></div>
+
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="KAWAIIYUMEE LOGO" class="logo-img large-banner" onerror="this.src='https://via.placeholder.com/150x150/000000/ffffff?text=KY'">
+        </div>
+
+        <div class="header">
+            <div class="online-badge">
+                <span class="online-dot"></span>
+                <span class="online-text">ONLINE</span>
+            </div>
+            <div class="version">v9.0</div>
+        </div>
+
+        <div class="title">
+            <h1>REVERSE / UPSIDE DOWN TEXT</h1>
+        </div>
+
+        <div class="sub-menu-container">
+            <a href="index.html" class="sub-menu-item">🏠 HOME</a>
+            <a href="binary.html" class="sub-menu-item">🔢 BINARY</a>
+            <a href="ascii.html" class="sub-menu-item">💻 ASCII</a>
+            <a href="morse.html" class="sub-menu-item">⚡ MORSE</a>
+            <a href="upload.html" class="sub-menu-item">📸 UPLOAD</a>
+            <a href="base64.html" class="sub-menu-item">🔐 BASE64</a>
+            <a href="cipher.html" class="sub-menu-item">🔑 CIPHER</a>
+            <a href="textreverse.html" class="sub-menu-item active">🔄 REVERSE</a>
+            <a href="asciiart.html" class="sub-menu-item">🎨 ASCII ART</a>
+            <a href="stegano.html" class="sub-menu-item">🕵️ STEGANO</a>
+            <a href="exif.html" class="sub-menu-item">📷 EXIF</a>
+            <a href="profile.html" class="sub-menu-item">👤 PROFIL</a>
+        </div>
+
+        <div class="tool-container">
+            <div class="tool-box">
+                <h2>REVERSE TEXT</h2>
+                <textarea id="reverseInput" class="tool-input" placeholder="MASUKKAN TEKS..."></textarea>
+                <div class="btn-group">
+                    <button class="action-btn" onclick="reverseText()">REVERSE</button>
+                    <button class="action-btn" onclick="clearReverse()">CLEAR</button>
+                </div>
+                <div id="reverseOutput" class="tool-output">...</div>
+            </div>
+
+            <div class="tool-box">
+                <h2>UPSIDE DOWN TEXT</h2>
+                <textarea id="upsideInput" class="tool-input" placeholder="MASUKKAN TEKS..."></textarea>
+                <div class="btn-group">
+                    <button class="action-btn" onclick="upsideDown()">FLIP</button>
+                    <button class="action-btn" onclick="clearUpside()">CLEAR</button>
+                </div>
+                <div id="upsideOutput" class="tool-output">...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                POWERED BY <span>SAURUS</span> • 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function reverseText() {
+            const input = document.getElementById('reverseInput').value;
+            if (!input) { document.getElementById('reverseOutput').innerText = '⚠️ MASUKKAN TEKS!'; return; }
+            document.getElementById('reverseOutput').innerText = input.split('').reverse().join('');
+        }
+        
+        function clearReverse() {
+            document.getElementById('reverseInput').value = '';
+            document.getElementById('reverseOutput').innerText = '...';
+        }
+        
+        function upsideDown() {
+            const input = document.getElementById('upsideInput').value;
+            if (!input) { document.getElementById('upsideOutput').innerText = '⚠️ MASUKKAN TEKS!'; return; }
+            
+            const map = {
+                'a': 'ɐ', 'b': 'q', 'c': 'ɔ', 'd': 'p', 'e': 'ǝ', 'f': 'ɟ', 'g': 'ƃ', 'h': 'ɥ',
+                'i': 'ı', 'j': 'ɾ', 'k': 'ʞ', 'l': 'l', 'm': 'ɯ', 'n': 'u', 'o': 'o', 'p': 'd',
+                'q': 'b', 'r': 'ɹ', 's': 's', 't': 'ʇ', 'u': 'n', 'v': 'ʌ', 'w': 'ʍ', 'x': 'x',
+                'y': 'ʎ', 'z': 'z', 'A': '∀', 'B': '𐐒', 'C': 'Ↄ', 'D': '◖', 'E': 'Ǝ', 'F': 'Ⅎ',
+                'G': '⅁', 'H': 'H', 'I': 'I', 'J': 'ſ', 'K': 'ʞ', 'L': '⅂', 'M': 'W', 'N': 'ᴎ',
+                'O': 'O', 'P': 'Ԁ', 'Q': 'Ό', 'R': 'ᴚ', 'S': 'S', 'T': '⊥', 'U': '∩', 'V': 'ᴧ',
+                'W': 'M', 'X': 'X', 'Y': '⅄', 'Z': 'Z', '0': '0', '1': 'Ɩ', '2': 'ᄅ', '3': 'Ɛ',
+                '4': 'ㄣ', '5': 'ϛ', '6': '9', '7': 'ㄥ', '8': '8', '9': '6', '.': '˙', ',': '\'',
+                '?': '¿', '!': '¡', '"': ',,', '(': ')', ')': '(', '[': ']', ']': '[', '{': '}',
+                '}': '{', '<': '>', '>': '<', '&': '⅋', '_': '‾'
+            };
+            
+            let result = '';
+            for (let i = input.length - 1; i >= 0; i--) {
+                let char = input[i];
+                result += map[char] || char;
+            }
+            document.getElementById('upsideOutput').innerText = result;
+        }
+        
+        function clearUpside() {
+            document.getElementById('upsideInput').value = '';
+            document.getElementById('upsideOutput').innerText = '...';
+        }
+    </script>
+</body>
+</html>

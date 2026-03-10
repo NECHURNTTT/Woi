@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAWAIIYUMEE - BINARY</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="binary-bg" id="binaryBg"></div>
+
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="KAWAIIYUMEE LOGO" class="logo-img large-banner" onerror="this.src='https://via.placeholder.com/150x150/000000/ffffff?text=KY'">
+        </div>
+
+        <div class="header">
+            <div class="online-badge">
+                <span class="online-dot"></span>
+                <span class="online-text">ONLINE</span>
+            </div>
+            <div class="version">v9.0</div>
+        </div>
+
+        <div class="title">
+            <h1>BINARY CONVERTER</h1>
+        </div>
+
+        <div class="sub-menu-container">
+            <a href="index.html" class="sub-menu-item">🏠 HOME</a>
+            <a href="binary.html" class="sub-menu-item active">🔢 BINARY</a>
+            <a href="ascii.html" class="sub-menu-item">💻 ASCII</a>
+            <a href="morse.html" class="sub-menu-item">⚡ MORSE</a>
+            <a href="upload.html" class="sub-menu-item">📸 UPLOAD</a>
+            <a href="base64.html" class="sub-menu-item">🔐 BASE64</a>
+            <a href="cipher.html" class="sub-menu-item">🔑 CIPHER</a>
+            <a href="textreverse.html" class="sub-menu-item">🔄 REVERSE</a>
+            <a href="asciiart.html" class="sub-menu-item">🎨 ASCII ART</a>
+            <a href="stegano.html" class="sub-menu-item">🕵️ STEGANO</a>
+            <a href="exif.html" class="sub-menu-item">📷 EXIF</a>
+            <a href="profile.html" class="sub-menu-item">👤 PROFIL</a>
+        </div>
+
+        <div class="tool-section">
+            <div class="tool-box">
+                <h2>TEXT → BINARY</h2>
+                <textarea id="textInput" class="tool-input" placeholder="MASUKKAN TEKS..."></textarea>
+                <button class="tool-btn" onclick="convertToBinary()">CONVERT</button>
+                <div class="tool-output" id="binaryOutput">...</div>
+            </div>
+
+            <div class="tool-box">
+                <h2>BINARY → TEXT</h2>
+                <textarea id="binaryInput" class="tool-input" placeholder="MASUKKAN BINARY..."></textarea>
+                <button class="tool-btn" onclick="convertFromBinary()">CONVERT</button>
+                <div class="tool-output" id="textOutput">...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                POWERED BY <span>SAURUS</span> • 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function convertToBinary() {
+            const text = document.getElementById('textInput').value;
+            if (!text) { document.getElementById('binaryOutput').innerText = '⚠️ MASUKKAN TEKS!'; return; }
+            let binary = '';
+            for (let i = 0; i < text.length; i++) {
+                binary += text.charCodeAt(i).toString(2).padStart(8, '0') + ' ';
+            }
+            document.getElementById('binaryOutput').innerText = binary.trim();
+        }
+
+        function convertFromBinary() {
+            const binary = document.getElementById('binaryInput').value.replace(/\s/g, '');
+            if (!binary || !/^[01]+$/.test(binary)) {
+                document.getElementById('textOutput').innerText = '⚠️ BINARY TIDAK VALID!'; return;
+            }
+            let text = '';
+            for (let i = 0; i < binary.length; i += 8) {
+                const byte = binary.substr(i, 8);
+                if (byte.length === 8) text += String.fromCharCode(parseInt(byte, 2));
+            }
+            document.getElementById('textOutput').innerText = text || '⚠️ GAGAL DECODE!';
+        }
+    </script>
+</body>
+</html>

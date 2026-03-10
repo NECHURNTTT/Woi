@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAWAIIYUMEE - BASE64</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tool-container { padding: 25px; border-bottom: 3px solid #ffffff; }
+        .tool-box { border: 3px solid #ffffff; padding: 25px; background: #0a0a0a; margin-bottom: 25px; }
+        .tool-box h2 { color: #ffffff; font-size: 32px; margin-bottom: 20px; text-align: center; }
+        .btn-group { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
+        .action-btn { background: #ffffff; color: #000000; border: 3px solid #ffffff; font-size: 18px; font-weight: 900; padding: 10px 25px; cursor: pointer; }
+        .action-btn:hover { background: #000000; color: #ffffff; }
+        .tool-output { background: #000000; border: 3px solid #ffffff; padding: 15px; color: #00ff00; font-size: 16px; font-weight: 700; font-family: 'Courier New', monospace; word-break: break-all; min-height: 100px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="binary-bg" id="binaryBg"></div>
+
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="KAWAIIYUMEE LOGO" class="logo-img large-banner" onerror="this.src='https://via.placeholder.com/150x150/000000/ffffff?text=KY'">
+        </div>
+
+        <div class="header">
+            <div class="online-badge">
+                <span class="online-dot"></span>
+                <span class="online-text">ONLINE</span>
+            </div>
+            <div class="version">v9.0</div>
+        </div>
+
+        <div class="title">
+            <h1>BASE64 ENCODER / DECODER</h1>
+        </div>
+
+        <div class="sub-menu-container">
+            <a href="index.html" class="sub-menu-item">🏠 HOME</a>
+            <a href="binary.html" class="sub-menu-item">🔢 BINARY</a>
+            <a href="ascii.html" class="sub-menu-item">💻 ASCII</a>
+            <a href="morse.html" class="sub-menu-item">⚡ MORSE</a>
+            <a href="upload.html" class="sub-menu-item">📸 UPLOAD</a>
+            <a href="base64.html" class="sub-menu-item active">🔐 BASE64</a>
+            <a href="cipher.html" class="sub-menu-item">🔑 CIPHER</a>
+            <a href="textreverse.html" class="sub-menu-item">🔄 REVERSE</a>
+            <a href="asciiart.html" class="sub-menu-item">🎨 ASCII ART</a>
+            <a href="stegano.html" class="sub-menu-item">🕵️ STEGANO</a>
+            <a href="exif.html" class="sub-menu-item">📷 EXIF</a>
+            <a href="profile.html" class="sub-menu-item">👤 PROFIL</a>
+        </div>
+
+        <div class="tool-container">
+            <div class="tool-box">
+                <h2>BASE64 ENCODER</h2>
+                <textarea id="encodeInput" class="tool-input" placeholder="MASUKKAN TEKS..."></textarea>
+                <div class="btn-group">
+                    <button class="action-btn" onclick="encodeBase64()">ENCODE</button>
+                    <button class="action-btn" onclick="clearEncode()">CLEAR</button>
+                </div>
+                <div id="encodeOutput" class="tool-output">...</div>
+            </div>
+
+            <div class="tool-box">
+                <h2>BASE64 DECODER</h2>
+                <textarea id="decodeInput" class="tool-input" placeholder="MASUKKAN BASE64..."></textarea>
+                <div class="btn-group">
+                    <button class="action-btn" onclick="decodeBase64()">DECODE</button>
+                    <button class="action-btn" onclick="clearDecode()">CLEAR</button>
+                </div>
+                <div id="decodeOutput" class="tool-output">...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                POWERED BY <span>SAURUS</span> • 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function encodeBase64() {
+            const input = document.getElementById('encodeInput').value;
+            if (!input) { document.getElementById('encodeOutput').innerText = '⚠️ MASUKKAN TEKS!'; return; }
+            document.getElementById('encodeOutput').innerText = btoa(input);
+        }
+        
+        function decodeBase64() {
+            const input = document.getElementById('decodeInput').value;
+            if (!input) { document.getElementById('decodeOutput').innerText = '⚠️ MASUKKAN BASE64!'; return; }
+            try {
+                document.getElementById('decodeOutput').innerText = atob(input);
+            } catch(e) {
+                document.getElementById('decodeOutput').innerText = '❌ BASE64 TIDAK VALID!';
+            }
+        }
+        
+        function clearEncode() {
+            document.getElementById('encodeInput').value = '';
+            document.getElementById('encodeOutput').innerText = '...';
+        }
+        
+        function clearDecode() {
+            document.getElementById('decodeInput').value = '';
+            document.getElementById('decodeOutput').innerText = '...';
+        }
+    </script>
+</body>
+</html>

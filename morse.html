@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAWAIIYUMEE - MORSE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="binary-bg" id="binaryBg"></div>
+
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="KAWAIIYUMEE LOGO" class="logo-img large-banner" onerror="this.src='https://via.placeholder.com/150x150/000000/ffffff?text=KY'">
+        </div>
+
+        <div class="header">
+            <div class="online-badge">
+                <span class="online-dot"></span>
+                <span class="online-text">ONLINE</span>
+            </div>
+            <div class="version">v9.0</div>
+        </div>
+
+        <div class="title">
+            <h1>MORSE CONVERTER</h1>
+        </div>
+
+        <div class="sub-menu-container">
+            <a href="index.html" class="sub-menu-item">🏠 HOME</a>
+            <a href="binary.html" class="sub-menu-item">🔢 BINARY</a>
+            <a href="ascii.html" class="sub-menu-item">💻 ASCII</a>
+            <a href="morse.html" class="sub-menu-item active">⚡ MORSE</a>
+            <a href="upload.html" class="sub-menu-item">📸 UPLOAD</a>
+            <a href="base64.html" class="sub-menu-item">🔐 BASE64</a>
+            <a href="cipher.html" class="sub-menu-item">🔑 CIPHER</a>
+            <a href="textreverse.html" class="sub-menu-item">🔄 REVERSE</a>
+            <a href="asciiart.html" class="sub-menu-item">🎨 ASCII ART</a>
+            <a href="stegano.html" class="sub-menu-item">🕵️ STEGANO</a>
+            <a href="exif.html" class="sub-menu-item">📷 EXIF</a>
+            <a href="profile.html" class="sub-menu-item">👤 PROFIL</a>
+        </div>
+
+        <div class="tool-section">
+            <div class="tool-box">
+                <h2>TEXT → MORSE</h2>
+                <textarea id="textInput" class="tool-input" placeholder="MASUKKAN TEKS..."></textarea>
+                <button class="tool-btn" onclick="convertToMorse()">CONVERT</button>
+                <div class="tool-output" id="morseOutput">...</div>
+            </div>
+
+            <div class="tool-box">
+                <h2>MORSE → TEXT</h2>
+                <textarea id="morseInput" class="tool-input" placeholder="MASUKKAN MORSE..."></textarea>
+                <button class="tool-btn" onclick="convertFromMorse()">CONVERT</button>
+                <div class="tool-output" id="textOutput">...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                POWERED BY <span>SAURUS</span> • 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const morseDict = {
+            'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..',
+            'J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.',
+            'S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..',
+            '0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....',
+            '7':'--...','8':'---..','9':'----.','.':'.-.-.-',',':'--..--','?':'..--..','!':'-.-.--',' ':'/'
+        };
+        const reverseMorse = {};
+        for (let [k,v] of Object.entries(morseDict)) reverseMorse[v] = k;
+
+        function convertToMorse() {
+            const text = document.getElementById('textInput').value.toUpperCase();
+            if (!text) { document.getElementById('morseOutput').innerText = '⚠️ MASUKKAN TEKS!'; return; }
+            let morse = '';
+            for (let i = 0; i < text.length; i++) {
+                morse += (morseDict[text[i]] || '?') + ' ';
+            }
+            document.getElementById('morseOutput').innerText = morse.trim();
+        }
+
+        function convertFromMorse() {
+            const morse = document.getElementById('morseInput').value.trim().split(' ');
+            let text = '';
+            for (let i = 0; i < morse.length; i++) {
+                if (morse[i] === '/') text += ' ';
+                else if (reverseMorse[morse[i]]) text += reverseMorse[morse[i]];
+                else { document.getElementById('textOutput').innerText = '⚠️ MORSE TIDAK VALID!'; return; }
+            }
+            document.getElementById('textOutput').innerText = text || '⚠️ GAGAL DECODE!';
+        }
+    </script>
+</body>
+</html>

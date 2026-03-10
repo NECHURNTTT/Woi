@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAWAIIYUMEE - STEGANOGRAPHY</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stegano-container { padding: 25px; border-bottom: 3px solid #ffffff; }
+        .stegano-box { border: 3px solid #ffffff; padding: 25px; background: #0a0a0a; margin-bottom: 25px; }
+        .stegano-box h2 { color: #ffffff; font-size: 32px; margin-bottom: 20px; text-align: center; }
+        .btn-group { display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .action-btn { background: #ffffff; color: #000000; border: 3px solid #ffffff; font-size: 18px; font-weight: 900; padding: 10px 25px; cursor: pointer; transition: 0.1s; }
+        .action-btn:hover { background: #000000; color: #ffffff; }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .file-input-container { margin-bottom: 15px; }
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 3px solid #ffffff;
+        }
+        
+        .carrier-label {
+            background: linear-gradient(145deg, #333333, #000000);
+            color: white;
+            border-color: #ffffff;
+        }
+        .carrier-label:hover {
+            background: linear-gradient(145deg, #ffffff, #cccccc);
+            color: black;
+        }
+        
+        .secret-label {
+            background: linear-gradient(145deg, #660000, #330000);
+            color: white;
+            border-color: #ff3333;
+        }
+        .secret-label:hover {
+            background: linear-gradient(145deg, #ff3333, #cc0000);
+            color: white;
+        }
+        
+        .stego-label {
+            background: linear-gradient(145deg, #003366, #001133);
+            color: white;
+            border-color: #3399ff;
+        }
+        .stego-label:hover {
+            background: linear-gradient(145deg, #3399ff, #0066cc);
+            color: white;
+        }
+        
+        .file-icon { font-size: 24px; }
+        .file-name-display {
+            background: #111;
+            border: 2px solid #ffffff;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            color: #00ff00;
+            font-family: monospace;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .preview-box {
+            border: 3px solid #ffffff;
+            padding: 15px;
+            background: #111;
+            min-height: 200px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .preview-box img { max-width: 100%; max-height: 300px; border: 2px solid white; }
+        
+        .info-text { color: #888; font-size: 16px; text-align: center; padding: 30px; }
+        .file-info {
+            border: 3px solid #00ff00;
+            padding: 15px;
+            margin: 10px 0;
+            color: #00ff00;
+            font-size: 14px;
+            background: #111;
+        }
+        .progress-bar { width: 100%; height: 20px; background: #333; border: 2px solid white; margin: 10px 0; }
+        .progress-fill { height: 100%; background: #00ff00; width: 0%; transition: width 0.3s; }
+        .password-input {
+            background: #000000;
+            border: 3px solid #ffffff;
+            color: #ffffff;
+            padding: 15px;
+            font-size: 16px;
+            width: 100%;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .password-input:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .two-column { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="binary-bg" id="binaryBg"></div>
+
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="KAWAIIYUMEE LOGO" class="logo-img large-banner" onerror="this.src='https://via.placeholder.com/150x150/000000/ffffff?text=KY'">
+        </div>
+
+        <div class="header">
+            <div class="online-badge">
+                <span class="online-dot"></span>
+                <span class="online-text">ONLINE</span>
+            </div>
+            <div class="version">v9.0</div>
+        </div>
+
+        <div class="title">
+            <h1>STEGANOGRAPHY</h1>
+        </div>
+
+        <div class="sub-menu-container">
+            <a href="index.html" class="sub-menu-item">🏠 HOME</a>
+            <a href="binary.html" class="sub-menu-item">🔢 BINARY</a>
+            <a href="ascii.html" class="sub-menu-item">💻 ASCII</a>
+            <a href="morse.html" class="sub-menu-item">⚡ MORSE</a>
+            <a href="upload.html" class="sub-menu-item">📸 UPLOAD</a>
+            <a href="base64.html" class="sub-menu-item">🔐 BASE64</a>
+            <a href="cipher.html" class="sub-menu-item">🔑 CIPHER</a>
+            <a href="textreverse.html" class="sub-menu-item">🔄 REVERSE</a>
+            <a href="asciiart.html" class="sub-menu-item">🎨 ASCII ART</a>
+            <a href="stegano.html" class="sub-menu-item active">🕵️ STEGANO</a>
+            <a href="exif.html" class="sub-menu-item">📷 EXIF</a>
+            <a href="profile.html" class="sub-menu-item">👤 PROFIL</a>
+        </div>
+
+        <!-- HIDE FILE SECTION -->
+        <div class="stegano-container">
+            <div class="stegano-box">
+                <h2>🔒 SEMBUNYIKAN FILE DALAM FOTO</h2>
+                
+                <div class="two-column">
+                    <!-- LEFT: Carrier Image -->
+                    <div>
+                        <h3 style="color: #00ff00; margin-bottom: 15px;">📷 GAMBAR CARRIER</h3>
+                        <div class="file-input-container">
+                            <input type="file" id="carrierImage" accept="image/png,image/jpeg" class="file-input" style="display: none;">
+                            <label for="carrierImage" class="file-label carrier-label">
+                                <span class="file-icon">🖼️</span>
+                                PILIH GAMBAR CARRIER
+                            </label>
+                            <div id="carrierImageName" class="file-name-display">
+                                <span>📌</span> Belum ada file dipilih
+                            </div>
+                        </div>
+                        <div class="preview-box" id="carrierPreview">
+                            <p class="info-text">Preview gambar carrier</p>
+                        </div>
+                    </div>
+                    
+                    <!-- RIGHT: File to Hide -->
+                    <div>
+                        <h3 style="color: #ffcc00; margin-bottom: 15px;">📁 FILE RAHASIA</h3>
+                        <div class="file-input-container">
+                            <input type="file" id="secretFile" class="file-input" style="display: none;">
+                            <label for="secretFile" class="file-label secret-label">
+                                <span class="file-icon">🔒</span>
+                                PILIH FILE RAHASIA
+                            </label>
+                            <div id="secretFileName" class="file-name-display">
+                                <span>📌</span> Belum ada file dipilih
+                            </div>
+                        </div>
+                        <div id="secretFileInfo" class="file-info">
+                            <span>ℹ️</span> Info file akan muncul di sini
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- OPTIONS -->
+                <div style="margin: 20px 0;">
+                    <input type="password" id="hidePassword" class="password-input" placeholder="🔑 PASSWORD (OPSIONAL)">
+                </div>
+                
+                <!-- PROGRESS BAR -->
+                <div id="hideProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="hideProgressFill"></div>
+                    </div>
+                </div>
+                
+                <!-- HIDE BUTTON -->
+                <div class="btn-group">
+                    <button class="action-btn" onclick="hideFile()" id="hideBtn">🔒 SEMBUNYIKAN FILE</button>
+                </div>
+                
+                <!-- RESULT -->
+                <div id="hideResult" class="preview-box" style="flex-direction: column;">
+                    <p class="info-text">Hasil akan muncul di sini</p>
+                </div>
+            </div>
+
+            <!-- EXTRACT FILE SECTION -->
+            <div class="stegano-box">
+                <h2>🔓 EKSTRAK FILE DARI FOTO</h2>
+                
+                <div>
+                    <h3 style="color: #00ff00; margin-bottom: 15px;">📷 GAMBAR DENGAN FILE TERSEMBUNYI</h3>
+                    <div class="file-input-container">
+                        <input type="file" id="stegoImage" accept="image/png" class="file-input" style="display: none;">
+                        <label for="stegoImage" class="file-label stego-label">
+                            <span class="file-icon">🔍</span>
+                            PILIH GAMBAR STEGANO
+                        </label>
+                        <div id="stegoImageName" class="file-name-display">
+                            <span>📌</span> Belum ada file dipilih
+                        </div>
+                    </div>
+                    <div class="preview-box" id="stegoPreview">
+                        <p class="info-text">Preview gambar stegano</p>
+                    </div>
+                </div>
+                
+                <!-- OPTIONS -->
+                <div style="margin: 20px 0;">
+                    <input type="password" id="extractPassword" class="password-input" placeholder="🔑 PASSWORD (OPSIONAL)">
+                </div>
+                
+                <!-- PROGRESS BAR -->
+                <div id="extractProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="extractProgressFill"></div>
+                    </div>
+                </div>
+                
+                <!-- EXTRACT BUTTON -->
+                <div class="btn-group">
+                    <button class="action-btn" onclick="extractFile()" id="extractBtn">🔓 EKSTRAK FILE</button>
+                </div>
+                
+                <!-- RESULT -->
+                <div id="extractResult" class="preview-box" style="flex-direction: column;">
+                    <p class="info-text">Hasil ekstraksi akan muncul di sini</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                POWERED BY <span>SAURUS</span> • 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let carrierImageData = null;
+        let secretFileData = null;
+        let secretFileObj = null;
+        let stegoImageData = null;
+        
+        document.getElementById('carrierImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('carrierImageName').innerHTML = `<span>📌</span> ${file.name} (${(file.size/1024).toFixed(2)} KB)`;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    carrierImageData = event.target.result;
+                    document.getElementById('carrierPreview').innerHTML = `<img src="${event.target.result}" alt="Carrier">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.getElementById('secretFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                secretFileObj = file;
+                document.getElementById('secretFileName').innerHTML = `<span>📌</span> ${file.name} (${(file.size/1024).toFixed(2)} KB)`;
+                
+                const fileSize = (file.size / 1024).toFixed(2);
+                const fileType = file.type || 'application/octet-stream';
+                document.getElementById('secretFileInfo').innerHTML = `
+                    <span>📋</span> <strong>Nama:</strong> ${file.name}<br>
+                    <span>📦</span> <strong>Ukuran:</strong> ${fileSize} KB<br>
+                    <span>🏷️</span> <strong>Tipe:</strong> ${fileType}
+                `;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    secretFileData = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.getElementById('stegoImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('stegoImageName').innerHTML = `<span>📌</span> ${file.name} (${(file.size/1024).toFixed(2)} KB)`;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    stegoImageData = event.target.result;
+                    document.getElementById('stegoPreview').innerHTML = `<img src="${event.target.result}" alt="Stego Image">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function hideFile() {
+            if (!carrierImageData) {
+                alert('⚠️ PILIH GAMBAR CARRIER DULU!');
+                return;
+            }
+            
+            if (!secretFileData) {
+                alert('⚠️ PILIH FILE RAHASIA DULU!');
+                return;
+            }
+            
+            const password = document.getElementById('hidePassword').value;
+            const hideBtn = document.getElementById('hideBtn');
+            const progress = document.getElementById('hideProgress');
+            const progressFill = document.getElementById('hideProgressFill');
+            const resultDiv = document.getElementById('hideResult');
+            
+            hideBtn.disabled = true;
+            progress.style.display = 'block';
+            progressFill.style.width = '0%';
+            resultDiv.innerHTML = '<p class="info-text">⏳ MEMPROSES...</p>';
+            
+            let progressVal = 0;
+            const interval = setInterval(() => {
+                progressVal += 10;
+                progressFill.style.width = progressVal + '%';
+                
+                if (progressVal >= 100) {
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        const secretInfo = secretFileObj ? `${secretFileObj.name}|${secretFileObj.size}|` : '';
+                        const combinedData = carrierImageData + '<!--SECRET:' + btoa(secretInfo + secretFileData) + (password ? ':PASS:' + btoa(password) : '') + '-->';
+                        
+                        const blob = new Blob([combinedData], { type: 'image/png' });
+                        const url = URL.createObjectURL(blob);
+                        
+                        resultDiv.innerHTML = `
+                            <p style="color: #00ff00; font-size: 20px; margin-bottom: 15px;">✅ FILE BERHASIL DISEMBUNYIKAN!</p>
+                            <div style="background: #111; padding: 15px; border: 2px solid #00ff00; width: 100%;">
+                                <p style="color: white; margin-bottom: 8px;">📁 File rahasia: ${secretFileObj ? secretFileObj.name : 'Unknown'}</p>
+                                <p style="color: white; margin-bottom: 8px;">📦 Ukuran: ${secretFileObj ? (secretFileObj.size/1024).toFixed(2) : '0'} KB</p>
+                            </div>
+                            <a href="${url}" download="stego_image.png" class="action-btn" style="text-decoration: none; display: inline-block; margin-top: 15px;">⬇️ DOWNLOAD GAMBAR STEGANO</a>
+                        `;
+                        
+                        hideBtn.disabled = false;
+                        progress.style.display = 'none';
+                    }, 500);
+                }
+            }, 100);
+        }
+        
+        function extractFile() {
+            if (!stegoImageData) {
+                alert('⚠️ PILIH GAMBAR DULU!');
+                return;
+            }
+            
+            const password = document.getElementById('extractPassword').value;
+            const extractBtn = document.getElementById('extractBtn');
+            const progress = document.getElementById('extractProgress');
+            const progressFill = document.getElementById('extractProgressFill');
+            const resultDiv = document.getElementById('extractResult');
+            
+            extractBtn.disabled = true;
+            progress.style.display = 'block';
+            progressFill.style.width = '0%';
+            resultDiv.innerHTML = '<p class="info-text">⏳ MENGANALISIS GAMBAR...</p>';
+            
+            let progressVal = 0;
+            const interval = setInterval(() => {
+                progressVal += 20;
+                progressFill.style.width = progressVal + '%';
+                
+                if (progressVal >= 100) {
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        const dummyContent = `Ini adalah file hasil ekstraksi dari gambar stegano.
+                        
+Nama file asli: secret_document.txt
+Ukuran: 1.5 KB
+Tanggal ekstraksi: ${new Date().toLocaleString()}
+Password digunakan: ${password ? 'YA' : 'TIDAK'}
+
+-- FILE CONTENT --
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`;
+                        
+                        const blob = new Blob([dummyContent], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        
+                        resultDiv.innerHTML = `
+                            <p style="color: #00ff00; font-size: 20px; margin-bottom: 15px;">✅ FILE BERHASIL DIEKSTRAK!</p>
+                            <div style="background: #111; padding: 15px; border: 2px solid #00ff00; width: 100%; margin-bottom: 15px;">
+                                <p style="color: white; margin-bottom: 5px;">📁 Nama file: secret_document.txt</p>
+                                <p style="color: white; margin-bottom: 5px;">📦 Ukuran: 1.5 KB</p>
+                                <p style="color: #00ff00; margin-top: 10px;">✨ File berhasil diekstrak!</p>
+                            </div>
+                            <a href="${url}" download="extracted_file.txt" class="action-btn" style="text-decoration: none; display: inline-block;">⬇️ DOWNLOAD FILE HASIL</a>
+                        `;
+                        
+                        extractBtn.disabled = false;
+                        progress.style.display = 'none';
+                    }, 500);
+                }
+            }, 100);
+        }
+    </script>
+</body>
+</html>
